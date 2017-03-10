@@ -1,6 +1,7 @@
-package pl.dawid.calculator
+package pl.dawid.calculator.model
 
-case class Id(value: String)
+import pl.dawid.calculator.services.Expression
+
 
 case class SplitInfo(
                       childrenMap: Map[Id, (Id, Id)],

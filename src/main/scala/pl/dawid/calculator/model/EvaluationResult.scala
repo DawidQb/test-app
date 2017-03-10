@@ -1,4 +1,3 @@
-package pl.dawid.calculator
-
+package pl.dawid.calculator.model
 
 case class EvaluationResult(result: Double)

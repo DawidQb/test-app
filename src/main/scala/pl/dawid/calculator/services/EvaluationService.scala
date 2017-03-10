@@ -1,11 +1,16 @@
-package pl.dawid.calculator
+package pl.dawid.calculator.services
+
+import com.typesafe.config.Config
+import pl.dawid.calculator.model.{Id, SplitInfo}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EvaluationService(private val parser: ExpressionParser)
+class EvaluationService(private val parser: ExpressionParser,
+                        private val config: Config)
                        (implicit val ec: ExecutionContext){
 
   private val rootId = Id("root")
+  private val maxDepth = config.getInt("app.maxDepth")
 
   private def getUniqueId: Id = Id(java.util.UUID.randomUUID.toString)
 
@@ -16,7 +21,7 @@ class EvaluationService(private val parser: ExpressionParser)
     }
   }
 
-  private def splitByDepth(expression: Expression, maxDepth: Int) = {
+  private def splitByDepth(expression: Expression) = {
     require(maxDepth > 0)
 
     def split(expression: Expression, myId: Id, splitInfo: SplitInfo): SplitInfo = {
@@ -59,8 +64,8 @@ class EvaluationService(private val parser: ExpressionParser)
     mergeAndGetValue(rootId)
   }
 
-  def evaluateInParallel(expression: Expression, maxDepth: Int): Future[Double] = {
-    val splitResult = splitByDepth(expression, maxDepth)
+  def evaluateInParallel(expression: Expression): Future[Double] = {
+    val splitResult = splitByDepth(expression)
     val valuesMap = evaluateMapInParallel(splitResult.expressionsMap)
     mergeValues(splitResult, valuesMap)
   }

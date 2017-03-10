@@ -18,6 +18,5 @@ libraryDependencies ++= Seq(
   "org.scalatest"     %% "scalatest" % scalaTestVersion % "test",
   "de.heikoseeberger" %% "akka-http-json4s" % "1.12.0",
   "org.json4s" %% "json4s-native" % json4sVersion,
-  "org.json4s" %% "json4s-ext" % json4sVersion,
-  "org.json4s" %% "json4s-jackson" % json4sVersion
+  "org.json4s" %% "json4s-ext" % json4sVersion
 )

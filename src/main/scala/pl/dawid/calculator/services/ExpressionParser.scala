@@ -1,4 +1,6 @@
-package pl.dawid.calculator
+package pl.dawid.calculator.services
+
+import pl.dawid.calculator.model.ParsingException
 
 import scala.util.Try
 import scala.util.parsing.combinator._

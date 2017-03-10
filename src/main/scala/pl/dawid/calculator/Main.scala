@@ -1,9 +1,8 @@
 package pl.dawid.calculator
 
-import akka.actor.{ActorRef, ActorSystem, Props}
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives.{as, complete, entity, logRequestResult, pathPrefix, post}
-import akka.pattern.ask
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
@@ -27,8 +26,7 @@ object Main extends App with Json4sSupport{
   implicit val timeout = Timeout(config.getDuration("app.timeout").toMillis.millis)
 
   val parser = new ExpressionParser
-
-  def createCalculatorActor: ActorRef = system.actorOf(Props(new CalculatorActor(parser)))
+  val evaluationService = new EvaluationService(parser)
 
   val routes = {
     logRequestResult("akka-http-test-app") {
@@ -36,7 +34,9 @@ object Main extends App with Json4sSupport{
         post {
           entity(as[ExpressionString]) { expressionStr =>
             complete {
-              (createCalculatorActor ? expressionStr).mapTo[String]
+              val expr = parser.parseExpression(expressionStr.expression).getOrElse(Constant(Double.NaN))
+              val maxDepth = config.getInt("app.maxDepth")
+              evaluationService.evaluateInParallel(expr, maxDepth).map(EvaluationResult)
             }
           }
         }

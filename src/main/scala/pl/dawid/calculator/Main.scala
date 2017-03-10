@@ -26,7 +26,9 @@ object Main extends App with Json4sSupport{
 
   implicit val timeout = Timeout(config.getDuration("app.timeout").toMillis.millis)
 
-  def createCalculatorActor: ActorRef = system.actorOf(Props[CalculatorActor])
+  val parser = new ExpressionParser
+
+  def createCalculatorActor: ActorRef = system.actorOf(Props(new CalculatorActor(parser)))
 
   val routes = {
     logRequestResult("akka-http-test-app") {

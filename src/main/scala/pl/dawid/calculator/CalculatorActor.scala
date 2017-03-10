@@ -4,14 +4,14 @@ import akka.actor.Actor
 
 
 
-class CalculatorActor extends Actor{
+class CalculatorActor(parser: ExpressionParser) extends Actor{
 
   private def generateUniqueId(): String = Math.random().toString //TODO make this really unique
 
   override def receive: Receive = {
     case ExpressionString(expression) =>
       val id = generateUniqueId()
-      Thread.sleep(5000)
-      sender ! "Response" + expression
+      Thread.sleep(100)
+      sender ! "Response: " + parser.parseExpression(expression).toString
   }
 }

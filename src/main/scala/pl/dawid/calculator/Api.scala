@@ -26,7 +26,8 @@ trait Api extends JsonMarshalling {
             complete {
               parser.parseExpression(expressionStr.expression) match {
                 case Success(expr) => evaluationService.evaluateInParallel(expr).map(EvaluationResult)
-                case Failure(thr) => HttpResponse(StatusCodes.BadRequest, entity = "Expression parsing error: " + thr.getMessage)
+                case Failure(thr) =>
+                  HttpResponse(StatusCodes.BadRequest, entity = "Expression parsing error: " + thr.getMessage)
               }
             }
           }

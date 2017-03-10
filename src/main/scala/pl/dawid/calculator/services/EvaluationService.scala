@@ -22,7 +22,6 @@ class EvaluationService(private val parser: ExpressionParser,
   }
 
   private def splitByDepth(expression: Expression) = {
-    require(maxDepth > 0)
 
     def split(expression: Expression, myId: Id, splitInfo: SplitInfo): SplitInfo = {
       expression match {
@@ -46,6 +45,7 @@ class EvaluationService(private val parser: ExpressionParser,
   }
 
   private def mergeValues(splitInfo: SplitInfo, valuesMap: Map[Id, Future[Double]]): Future[Double] = {
+
     def mergeAndGetValue(id: Id): Future[Double] = {
       if (valuesMap.keys.exists(_ == id)) {
         valuesMap(id)

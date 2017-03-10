@@ -14,9 +14,11 @@ val json4sVersion = "3.5.0"
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+  "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
   "com.typesafe.akka" %% "akka-http"  % akkaHttpVersion,
+  "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion,
   "org.scalatest"     %% "scalatest" % scalaTestVersion % "test",
   "de.heikoseeberger" %% "akka-http-json4s" % "1.12.0",
-  "org.json4s" %% "json4s-native" % json4sVersion,
-  "org.json4s" %% "json4s-ext" % json4sVersion
+  "org.json4s"        %% "json4s-native" % json4sVersion,
+  "org.json4s"        %% "json4s-ext" % json4sVersion
 )
